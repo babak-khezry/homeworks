@@ -27,6 +27,7 @@ void custom(int);//customer menu
 void addacc();//create the new accounts
 void cash(int);//get cash money
 int end();//end the program
+//more info
 
 int main()
 {
