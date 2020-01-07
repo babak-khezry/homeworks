@@ -12,7 +12,7 @@ struct customer//sturct
 	int balance;
 	int updates;//show the account turnovers
 };
-int iNumber = 0;//to check the number of customers that we have
+FILE *ptf;//file pointer
 struct customer cost[100];//variable of all costomers
 void changePasword(int);//change the pasword
 void accessAcc();//access to the account
@@ -36,13 +36,12 @@ int main()
 		cost[i].updates=0;
 	for(i=0;i<100;i++)
 		cost[i].balance=1;//put 1 balance for all the accounts couse of acc acces
-	FILE *ptf;//file
-	ptf = fopen("C:\\Users\\Radin\\Desktop\\project\\text.txt","r+");//geting file
-	for(i=0;i<2;i++)
+	
+	ptf = fopen("C:\\Users\\Radin\\Desktop\\project\\text.txt","a+");//geting file
+	for(i=10;feof(ptf)==0;i++)
 	{	
 		fscanf(ptf,"%s %s %s",cost[i].fname,cost[i].lname,cost[i].accn);//geting file informations
 		fscanf(ptf,"%d %d",&cost[i].accp,&cost[i].balance);//geting file informations
-		fscanf(ptf,"%d",&iNumber);
 	}
 	menu();
 	return 0;
@@ -124,32 +123,31 @@ void addacc()//create the acounts
 {
 	system("cls");
 	int n ,i;
-	printf("Enter how much account you want to create : ");//the number of new acounts
-	scanf("%d",&n);
-	n+=iNumber;
-	for(i = iNumber; i<n; i++)//put accounts
+	printf("Enter the first name : ");
+	scanf("%s",cost[i].fname);
+	fprintf(ptf,"%s ",cost[i].fname);
+	printf("Enter the last name : ");
+	scanf("%s",cost[i].lname);
+	fprintf(ptf,"%s ",cost[i].lname);
+	printf("Enter the account number <%d> : ",i+1);
+	scanf("%s",cost[i].accn);//put card number
+	fprintf(ptf,"%s ",cost[i].accn);
+	printf("Enter the account pasword <%d> : ",i+1);
+	for(;;)//only pass more then 4 number 
 	{
-		printf("Enter the first name : ");
-		scanf("%s",cost[i].fname);
-		printf("Enter the last name : ");
-		scanf("%s",cost[i].lname);
-		printf("Enter the account number <%d> : ",i+1);
-		scanf("%s",cost[i].accn);//put card number
-		printf("Enter the account pasword <%d> : ",i+1);
-		for(;;)//only pass more then 4 number 
+		scanf("%d",&cost[i].accp);//get pasword
+		if(cost[i].accp < 999)
+			printf("Short pasword!\nEnter another pasword <%d> : ",i+1);
+		else
 		{
-			scanf("%d",&cost[i].accp);//get pasword
-			if(cost[i].accp < 999)
-				printf("Short pasword!\nEnter another pasword <%d> : ",i+1);
-			else
-				break;
-		}	
+			fprintf(ptf,"%d ",cost[i].accp);
+			break;
+		}
+	}	
 	printf("Enter the lnitial balance costomer <%d> : ",i+1);
 	scanf("%d",&cost[i].balance);//put balance
-	
+	fprintf(ptf,"%d\n",cost[i].balance);
 	system("cls");
-	}
-	iNumber = n;
 	printf("press Enter to go back to menu : ");//going back to menu
 	getchar();
 	getchar();
@@ -276,6 +274,7 @@ void cash(int copy)//get the cash money
 }
 void end()//end the program
 {
+	fclose(ptf);
 	exit(0);//ending the program
 }
 void updateAcc()//update an acount 
