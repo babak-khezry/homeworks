@@ -11,6 +11,7 @@ struct customer//sturct
 	int accp;//account password
 	int balance;
 	int updates;//show the account turnovers
+	char last_updates[1000000];
 };
 FILE *ptf;//file pointer
 struct customer cost[100];//variable of all costomers
@@ -256,6 +257,7 @@ void cash(int copy)//get the cash money
 		printf("\n\ntake your money");//get money 
 		cost[copy].balance -= money;//low off money
 		cost[copy].updates++;
+		snprintf(cost[copy].last_updates, sizeof(cost[copy].last_updates), "%scash withdrawal         %d\n\n",cost[copy].last_updates,money);//put variables in string
 		printf("\n\nthe left over is : %d",cost[copy].balance);//show the money left
 		printf("\n\nAny another request : \n1_yes\n2_no \n");
 		for(;;)
@@ -315,9 +317,7 @@ void updateAcc()//update an acount
 		printf("Press enter for going back to employ menu : ");
 		getchar();//to cancel the last Enter
 		getchar();
-		employe();
-		
-		
+		employe();	
 	}
 }
 void employAcc()//check access of the employer
@@ -340,7 +340,7 @@ void employAcc()//check access of the employer
 void transfer(int copy)//transfer money betwen accounts
 {
 	system("cls");
-	char accn2[max];
+	char accn2[max],update[max];//,massage1[max]="\nThe transfer   ",massage2[max]="\nreceive    ";
 	int i, copy2, count = 0, money;
 	printf("Enter the destination number : ");
 	scanf("%s",accn2);
@@ -349,10 +349,15 @@ void transfer(int copy)//transfer money betwen accounts
 		if(strcmp(accn2,cost[i].accn) == 0)//finding acount
 		{
 			copy2 = i;//number of distention account
+			count++;
 			break;
-		}
-			
+		}		
 	}
+	if(count==0)
+		{
+		printf("the acount does not exist ");
+		end();
+		}
 	printf("Enter the amount of money : ");
 	scanf("%d",&money);
 	if(cost[copy].balance < money)//checking account have anouph money to tranfer
@@ -385,12 +390,14 @@ void transfer(int copy)//transfer money betwen accounts
 			cost[copy].balance -= money;//reduce money for origin card
 			cost[copy2].balance += money;//move money to distention card
 			cost[copy].updates++;
+			snprintf(cost[copy].last_updates, sizeof(cost[copy].last_updates), "%sTransfer %d to %s\n\n",cost[copy].last_updates,money,cost[copy2].accn);//put variables in string
+			snprintf(cost[copy2].last_updates, sizeof(cost[copy2].last_updates), "%sRecive %d from %s\n\n",cost[copy2].last_updates,money,cost[copy].accn);//put variables in string	
 			break;
 		}
 		case 2 : end();
 	}
 	
-	printf("\nAny another request : \n1_yes\n2_no \n");
+	printf("\n\n\nAny another request : \n1_yes\n2_no \n");
 	int y;
 	for(;;)
 	{	
@@ -408,7 +415,21 @@ void transfer(int copy)//transfer money betwen accounts
 }
 void recentUpdate(int copy)//show last 10 updates
 {
-	
+	system("cls");
+	printf("%s",cost[copy].last_updates);
+	printf("\n\n\nAny another request : \n1_yes\n2_no \n");
+	int y;
+	for(;;)
+	{	
+		scanf("%d",&y);
+		if(y == 1||y == 2)
+			switch(y)
+			{
+				case 1 :	custom(copy);//got back to costomer menu
+				case 2 :	end();//close program	
+			}
+		else	continue;
+	}	
 }
 void deleteAcc()//delect accounts
 {
@@ -451,7 +472,6 @@ void deleteAcc()//delect accounts
 				getchar();
 				getchar();	
 				employe();//going back to menu	
-				break;
 			}
 			case 2 : deleteAcc();//change the account that want to remove
 			break;
