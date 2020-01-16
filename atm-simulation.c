@@ -53,16 +53,16 @@ void menu()
     printf("1. Sign in as employee\n2. Sign in as customer\n3. Exit\n");
     for(;;)//just let put 1 or 2 or 3
     {
-    	int x ;
-		scanf("%d",&x);
-    	if(x==1||x==2||x==3)
-   			switch(x)
+    	char ch;
+		ch = getch();
+    	if(ch=='1'||ch=='2'||ch=='3')
+   			switch(ch)
   	    	{
-    			case 1 :	employAcc();
+    			case '1' :	employAcc();
     			break;
-    			case 2 :	accessAcc();
+    			case '2' :	accessAcc();
     			break;
-    			case 3 :	end();
+    			case '3' :	end();
 				break;
 			}
 		else	continue;
@@ -74,23 +74,23 @@ void employe()
 	printf("1. Open an account\n2. Update an account");//employ menu
 	printf("\n3. Settle and Archive an account\n");//employ menu
 	printf("4. list Recent Archived Accounts\n5. Back to the main menu\n");//employ menu
-	int x;
+	char ch;
 	for(;;)
 	{
-		scanf("%d",&x);
-		if(x==1||x==2||x==3||x==4||x==5)
+		ch = getch();
+		if(ch == '1'||ch == '2'||ch == '3'||ch == '4'||ch == '5')
 		{
 			switch(x)
     		{
-    			case 1 : addacc();//create account
+    			case '1' : addacc();//create account
     				break;
-   		 		case 2 : updateAcc();//update account
+   		 		case '2' : updateAcc();//update account
    			 		break;
-    			case 3 : deleteAcc();//remove account
+    			case '3' : deleteAcc();//remove account
 					break;
-				case 4 : listArchiv();//list of remove accounts	
+				case '4' : listArchiv();//list of remove accounts	
 					break;
-				case 5 : menu();//back to menue
+				case '5' : menu();//back to menue
 					break;
 			}
 		}
@@ -103,22 +103,28 @@ void custom(int n)
 	printf("1. Account balance\n2. Transfer\n");//menu
 	printf("3. Cash withdrawal\n4. Recent account updates\n");
 	printf("5. Change password\n6. Back to the main menu\n");
-	int copy = n, x;
-	scanf("%d",&x);
-	switch(x)
-    {
-    	case 1 :	balance(copy);
-    		break;
-    	case 2 :	transfer(copy);
-    		break;
-    	case 3 :	cash(copy);
-			break;
-		case 4 :	recentUpdate(copy);
-			break;
-		case 5 :	changePasword(copy);
-			break;
-		case 6 :	menu();
-	}
+	int copy = n;
+	char ch;
+	for(;;)
+	{	
+		ch = getch();
+		if(ch=='1'||ch=='2'||ch=='3'||ch=='4'||ch=='5'||ch=='6')
+		switch(ch)
+	    {
+	    	case '1' :	balance(copy);
+	    		break;
+	    	case '2' :	transfer(copy);
+	    		break;
+	    	case '3' :	cash(copy);
+				break;
+			case '4' :	recentUpdate(copy);
+				break;
+			case '5' :	changePasword(copy);
+				break;
+			case '6' :	menu();
+				break;
+		}
+	}	
 }
 void addacc()//create the acounts
 {
@@ -159,16 +165,16 @@ void balance(int copy)//show money available
 	system("cls");
 	printf("your balance is : %d",cost[copy].balance);//show balance
 	printf("\n\nAny another request : \n1_yes\n2_no \n");
-	int y;
+	char ch;
 	for(;;)
 	{	
-		scanf("%d",&y);
-		if(y == 1||y == 2)
-			switch(y)
+		ch = getch();
+		if(ch == '1'||ch == '2')
+			switch(ch)
 			{
-				case 1 : custom(copy);//got back to costomer menu
+				case '1' : custom(copy);//got back to costomer menu
 				break;
-				case 2 : end();//close program	
+				case '2' : end();//close program	
 			}
 		else	continue;
 	}
@@ -210,7 +216,7 @@ void accessAcc()//customer acces
 void changePasword(int copy)//put new password
 {
 	system("cls");
-	int pas, y;
+	int pas;
 	printf("Enter the new password : ");//put the new password
 	for(;;)
 	{
@@ -220,15 +226,17 @@ void changePasword(int copy)//put new password
 	}
 	cost[copy].accp=pas;//chenge password
 		printf("\nAny another request : \n1_yes\n2_no \n");
+	char ch;
 	for(;;)
 	{	
-		scanf("%d",&y);
-		if(y == 1||y == 2)
-			switch(y)
+		ch = getch();
+		if(ch == '1'||ch == '2')
+			switch(ch)
 			{
-				case 1 : custom(copy);//got back to costomer menu
-				break;
-				case 2 : end();//close program	
+				case '1' : custom(copy);//got back to costomer menu
+					break;
+				case '2' : end();//close program
+					break;	
 			}
 		else	continue;
 	}
@@ -237,20 +245,25 @@ void cash(int copy)//get the cash money
 {
 	system("cls");
 	printf("Enter how much you want to withdraw : ");
-	int money,y;
+	int money;
+	char ch;
 	scanf("%d",&money);//put how much cash you want to get
-	if(money > cost[copy].balance)
+	if(money >= cost[copy].balance)
 	{
 		printf("Not enough inventory");
 		printf("\nAny another request : \n1_yes\n2_no \n");
-		int y;
-		scanf("%d",&y);
-		switch(y)
-		{
-			case 1 : custom(copy);//got back to costomer menu
-				break;
-			case 2 : end();//close program
-		}	
+		for(;;)
+		{	
+			ch = getch();
+			if(ch == '1'||ch == '2')
+				switch(ch)
+				{
+					case '1' : custom(copy);//got back to costomer menu
+					break;
+					case '2' : end();//close program	
+				}
+			else	continue;
+		}
 	}
 	else
 	{
@@ -262,14 +275,15 @@ void cash(int copy)//get the cash money
 		printf("\n\nAny another request : \n1_yes\n2_no \n");
 		for(;;)
 		{	
-			scanf("%d",&y);
-			if(y == 1||y == 2)
-			switch(y)
-			{
-				case 1 : custom(copy);//got back to costomer menu
-					break;
-				case 2 : end();//close program	
-			}
+			ch = getch();
+			if(ch == '1'||ch == '2')
+				switch(ch)
+				{
+					case '1' : custom(copy);//got back to costomer menu
+						break;
+					case '2' : end();//close program
+						break;	
+				}
 			else	continue;
 		}
 	}
@@ -309,9 +323,10 @@ void updateAcc()//update an acount
 		printf("Enter the new pasword for the account : ");
 		for(;;)//check to pasword be bigger then 3 character
 		{
-		scanf("%d",&pas);
-		if(pas > 999) break;//check password
-		printf("short pasword ! \nput another pasword");
+			scanf("%d",&pas);
+			if(pas > 999) 
+				break;//check password
+			printf("short pasword ! \nput another pasword");
 		}
 		cost[i].accp = pas;
 		printf("Press enter for going back to employ menu : ");
@@ -327,7 +342,7 @@ void employAcc()//check access of the employer
 	char p[max] = "admin", p1[max];//pasword of employer
 	for(;;)
 	{
-		printf("Enter the usename : ");
+		printf("Enter the username : ");
 		scanf("%s",n1);//get null usename
 		printf("Enter the pasword : ");
 		scanf("%s",p1);//get null pasword
@@ -396,7 +411,6 @@ void transfer(int copy)//transfer money betwen accounts
 		}
 		case 2 : end();
 	}
-	
 	printf("\n\n\nAny another request : \n1_yes\n2_no \n");
 	int y;
 	for(;;)
@@ -418,15 +432,17 @@ void recentUpdate(int copy)//show last 10 updates
 	system("cls");
 	printf("%s",cost[copy].last_updates);
 	printf("\n\n\nAny another request : \n1_yes\n2_no \n");
-	int y;
+	char ch;
 	for(;;)
 	{	
-		scanf("%d",&y);
-		if(y == 1||y == 2)
-			switch(y)
+		ch = getch();
+		if(ch == '1'||ch == '2')
+			switch(ch)
 			{
-				case 1 :	custom(copy);//got back to costomer menu
-				case 2 :	end();//close program	
+				case '1' :	custom(copy);//got back to costomer menu
+					break;
+				case '2' :	end();//close program	
+					break;
 			}
 		else	continue;
 	}	
@@ -435,7 +451,7 @@ void deleteAcc()//delect accounts
 {
 	int i, count = 0, x;
 	system("cls");
-	char accn[max];
+	char accn[max],ch;
 	printf("Enter the card number : ");//get the card number
 	for(;;)
 	{
@@ -460,11 +476,11 @@ void deleteAcc()//delect accounts
 	printf(" \n1_Yes\n2_No\n3_Go to employee menu\n");//request permission
 	for(;;)
 	{
-		scanf("%d",&x);
-		if(x == 1||x == 2||x == 3)
-		switch(x)
+		ch = getch();
+		if(ch == '1'||ch == '2'||ch == '3')
+		switch(ch)
 		{
-			case 1 : 
+			case '1' : 
 			{	
 				cost[i].balance = 0;//delete account by put tha balance 0;
 				printf("Account deleted\n");
@@ -473,10 +489,10 @@ void deleteAcc()//delect accounts
 				getchar();	
 				employe();//going back to menu	
 			}
-			case 2 : deleteAcc();//change the account that want to remove
-			break;
-			case 3 : employe();//go back to menu
-			break;
+			case '2' : deleteAcc();//change the account that want to remove
+				break;
+			case '3' : employe();//go back to menu
+				break;
 		}	
 	}
 }
